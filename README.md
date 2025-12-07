@@ -2442,3 +2442,209 @@ Deadline:
 
 Plagiarism is strictly prohibited. 
 
+Based on the provided **Machine Learning Final Project** handout. 
+
+# Machine Learning Final Project 2025 — Metallic Surface Defect Detection
+
+This repository contains my implementation for the **Machine Learning Final Project** on **industrial inspection with object detection**.
+
+The task is to train and evaluate an object detection model on a **custom metallic surface defect dataset** with **6 defect classes**, then submit predictions to a **private Kaggle leaderboard** using a hidden test set.
+
+---
+
+## Objectives
+- Apply deep learning object detection techniques to an industrial inspection problem.
+- Train and evaluate an improved detection model.
+- Generate a `submission.csv` for Kaggle evaluation.
+
+---
+
+## Dataset
+The dataset contains metallic surface images with **6 defect classes**:
+1. Crazing  
+2. Inclusion  
+3. Patches  
+4. Pitted Surface  
+5. Rolled-in Scale  
+6. Scratches  
+
+**Data split provided**
+- **Training set:** 1,440 images with bounding box annotations  
+- **Test set:** 360 unlabeled images (used for Kaggle submission)
+
+You may further split the training set into train/validation as needed.
+
+---
+
+## Competition Rules (Important)
+- **Individual work only.** No teamwork, code sharing, or joint submissions.
+- **You may use pretrained models, but must modify or improve the architecture.**
+  - Do **not** use a pretrained model as-is.
+  - Allowed improvements: add layers, adjust detection heads, fine-tune, or other task-relevant changes.
+- **Submission limit:** max 20 submissions per day on Kaggle.
+- **Evaluation metric:** **IoU @ 0.5** (higher is better).
+- **Baseline requirement:** your model must achieve at least **70% mAP @ IoU 0.5**.
+- **Final Kaggle deadline:** **June 26, 23:59**.
+
+---
+
+## Kaggle Registration Notes
+- Join the competition using the invitation link provided in the handout.
+- Your Kaggle email must match your E3 email.
+- Change your Kaggle display name to:
+  - `StudentID_Name` (e.g., `112101014_YourName`)
+
+---
+
+## Method Overview
+I trained an object detection model with the following strategy:
+
+- **Backbone:** pretrained (e.g., ResNet / CSP / equivalent)
+- **Architecture modifications (required):**
+  - Customized detection head
+  - Adjusted feature pyramid / neck
+  - Tuned anchor settings (if applicable)
+  - Class-specific loss/augmentation refinements
+- **Training improvements:**
+  - Stronger augmentations (random resize/crop, color jitter, blur/noise)
+  - Better learning rate scheduling
+  - Longer training with early stopping based on validation mAP
+
+> The exact design and ablation results are documented in the report.
+
+---
+
+## Repository Structure (Suggested)
+```text
+.
+├─ notebooks/
+│  └─ 0528_2.ipynb
+├─ src/
+│  ├─ train.py
+│  ├─ infer.py
+│  ├─ dataset.py
+│  ├─ transforms.py
+│  └─ utils.py
+├─ outputs/
+│  ├─ checkpoints/
+│  ├─ logs/
+│  └─ predictions/
+├─ submission.csv
+└─ README.md
+````
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.9+
+* PyTorch
+* torchvision
+* numpy
+* pandas
+* opencv-python
+* matplotlib
+
+Install:
+
+```bash
+pip install torch torchvision numpy pandas opencv-python matplotlib
+```
+
+---
+
+## Training
+
+### Option A — Train on Kaggle
+
+You can train directly in a Kaggle Notebook without downloading data locally.
+
+### Option B — Train Locally
+
+1. Place the dataset in a local folder:
+
+```text
+data/
+├─ train/
+│  ├─ images/
+│  └─ annotations/
+└─ test/
+    └─ images/
+```
+
+2. Run training:
+
+```bash
+python src/train.py \
+  --data_dir data \
+  --epochs 50 \
+  --batch_size 8 \
+  --img_size 640 \
+  --lr 1e-3 \
+  --save_dir outputs/checkpoints
+```
+
+---
+
+## Validation
+
+During training, evaluate using:
+
+* **mAP @ IoU 0.5**
+* Per-class AP
+* Loss curves
+
+---
+
+## Inference & Submission
+
+1. Generate predictions on the test set:
+
+```bash
+python src/infer.py \
+  --checkpoint outputs/checkpoints/best.pth \
+  --test_dir data/test/images \
+  --out_dir outputs/predictions
+```
+
+2. Build `submission.csv` following the competition format:
+
+```bash
+python src/utils.py --build_submission \
+  --pred_dir outputs/predictions \
+  --output submission.csv
+```
+
+3. Upload `submission.csv` to Kaggle.
+
+---
+
+## Tips for Better Performance
+
+* Verify annotation format and class mapping carefully.
+* Start from a strong baseline detector, then **document your architectural changes**.
+* Use a stable train/val split.
+* Monitor overfitting; tune augmentation and weight decay.
+* Try:
+
+  * higher-resolution training
+  * balanced sampling if classes are imbalanced
+  * class-aware loss weights
+
+---
+
+## Academic Integrity
+
+This is an **individual project**.
+Any code sharing or collaboration that violates the rules may lead to severe penalties.
+
+---
+
+## Acknowledgments
+
+* Course: Machine Learning (NYCU)
+* Instructor: Prof. Hsien-I Lin
+* TAs: Satrio Sanjaya, Muhammad Ahsan
+
