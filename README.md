@@ -125,6 +125,3 @@ Plagiarism is strictly prohibited. Ensure your implementation and report are you
 ## Notes
 
 This README is aligned with the lab handout requirements and task list. 
-
-```
-```
