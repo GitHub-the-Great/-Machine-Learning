@@ -1344,3 +1344,153 @@ Plagiarism is strictly prohibited.
   plus evidence from training/validation curves.
 * If accuracy improves but overfitting appears,
   strengthen augmentation/regularization or adjust learning rate/epochs. 
+
+# Machine Learning Lab 6 (In-Class) — CNN Ops from Scratch (NumPy)
+
+This repository contains my **Lab 6 In-Class Assignment** for the Machine Learning laboratory on **Convolutional Neural Networks**.  
+In this lab, I implement **basic 2D convolution (with padding and stride)** and apply **vertical/horizontal edge detection** on a grayscale image using **NumPy only**, then visualize results in **black & white** through thresholding. :contentReference[oaicite:0]{index=0}
+
+---
+
+## Objectives
+- Implement **2D convolution** and understand how **padding** and **stride** affect output size and information flow.
+- Apply **vertical** and **horizontal** edge filters to detect structure patterns.
+- Visualize:
+  - Original image
+  - Edge maps with **padding=1**
+  - Edge maps with **stride=2**
+- Convert outputs to **binary (black/white)** images via thresholding. :contentReference[oaicite:1]{index=1}
+
+---
+
+## Key Rules / Constraints
+- Use **NumPy** for convolution computation.
+- **Do not use high-level deep learning APIs** (e.g., PyTorch `nn.Conv2d`, `F.max_pool2d`, TensorFlow equivalents).
+- **Do not use OpenCV built-in convolution** functions.  
+  (OpenCV may be used only for image loading in the template.) :contentReference[oaicite:2]{index=2}
+
+---
+
+## Tasks
+
+### 1. Load & Normalize Image
+Load a grayscale test image (e.g., `original.png`) and normalize to `[0, 1]`. :contentReference[oaicite:3]{index=3}
+
+### 2. Implement General 2D Convolution
+Complete:
+```python
+def convolve2d(image, kernel, padding=0, stride=1):
+    # 1) Flip kernel
+    # 2) Apply zero-padding
+    # 3) Compute output size
+    # 4) Slide kernel with stride
+    # 5) Sum element-wise products
+````
+
+The lab references the standard definition:
+[
+C(j,k) = \sum_l \sum_m I(j+l, k+m) K(l,m)
+]
+
+
+### 3. Define Edge Detection Filters
+
+Fill in the **vertical** and **horizontal** 3×3 kernels provided in the slides/template. 
+
+### 4. Apply Convolution
+
+Compute:
+
+* `vertical_edges` with `padding=1, stride=1`
+* `horizontal_edges` with `padding=1, stride=1`
+* `vertical_stride` with `padding=1, stride=2`
+* `horizontal_stride` with `padding=1, stride=2` 
+
+### 5. Binarize & Visualize
+
+Use the provided `binarize()` helper to normalize and threshold outputs, then visualize **five views**:
+
+1. Original
+2. Vertical edges (pad=1)
+3. Horizontal edges (pad=1)
+4. Vertical edges (stride=2)
+5. Horizontal edges (stride=2) 
+
+---
+
+## Grading (In-Class — 30% Max)
+
+**Implementation**
+
+1. (10%) Correct `convolve2d()` with kernel flipping, padding, stride
+2. (5%) Correct application of vertical & horizontal filters
+3. (5%) Correct binary thresholding and visualization of all five views
+
+**Questions**
+4. (5%) What patterns does the vertical edge filter detect vs horizontal?
+5. (5%) What is the effect of padding and why use it? 
+
+---
+
+## Suggested Repository Structure
+
+```text
+.
+├─ 112101014_Lab6_InClass.ipynb
+├─ 112101014_Lab6_InClass.pdf
+├─ original.png
+└─ README.md
+```
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* numpy
+* matplotlib
+* opencv-python *(for image loading only)*
+
+Install:
+
+```bash
+pip install numpy matplotlib opencv-python
+```
+
+---
+
+## How to Run
+
+### Jupyter Notebook
+
+```bash
+jupyter notebook 112101014_Lab6_InClass.ipynb
+```
+
+Run all cells to generate:
+
+* edge detection outputs (pad=1)
+* strided outputs (stride=2)
+* binarized black/white visualizations.
+
+---
+
+## Submission
+
+Upload to E3:
+
+1. **Report**: `StudentID_Lab6_InClass.pdf`
+
+   * Put screenshots of results in the last pages of the provided PDF.
+2. **Code**: `StudentID_Lab6_InClass.py` or `StudentID_Lab6_InClass.ipynb`
+
+Deadline: **16:20 PM**. 
+
+---
+
+## Academic Integrity
+
+Plagiarism is strictly prohibited. 
+
