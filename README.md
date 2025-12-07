@@ -405,3 +405,293 @@ Deadline:
 
 Plagiarism is strictly prohibited. Submitting copied work may result in penalties. 
 
+# Machine Learning Lab 3 (In-Class) — Deep Neural Network Forward Pass
+
+This repository contains my **Lab 3 In-Class Assignment** for the Machine Learning laboratory on **Deep Neural Networks**.  
+The focus of this in-class task is to implement a **1-hidden-layer feedforward neural network forward pass** from scratch using **NumPy**, integrate and compare multiple **activation functions**, and manually verify one full forward-pass computation. :contentReference[oaicite:0]{index=0}
+
+## Objectives
+- Understand the architecture and flow of a simple feedforward neural network with **one hidden layer**.
+- Manually implement and compare activation functions:
+  - **tanh**
+  - **hard tanh**
+  - **softplus**
+  - **ReLU**
+  - **leaky ReLU**
+- Perform **forward propagation** using matrix operations in NumPy.
+- Analyze how different activation functions affect hidden layer outputs and final predictions. :contentReference[oaicite:1]{index=1}
+
+## What I Implemented
+### 1. Activation Functions
+Implemented using their mathematical definitions:
+- `tanh(x)`
+- `hard_tanh(x)`
+- `softplus(x)`
+- `relu(x)`
+- `leaky_relu(x, alpha=0.1)` :contentReference[oaicite:2]{index=2}
+
+### 2. One Hidden Layer Forward Pass
+Based on the provided equations and fixed weights:
+- Construct input with bias term.
+- Compute hidden pre-activation `a1`.
+- Apply chosen activation to obtain `z1`.
+- Add hidden bias node `z0 = 1`.
+- Compute output `y` using `W2`. :contentReference[oaicite:3]{index=3}
+
+### 3. Activation Comparison
+- Ran the same forward pass with each activation function.
+- Compared **hidden layer outputs** (`z1`) across activations.
+- Captured screenshots for the report. :contentReference[oaicite:4]{index=4}
+
+### 4. Manual Verification
+- Selected one activation function (e.g., tanh).
+- Manually computed:
+  - hidden activations
+  - augmented hidden vector with bias
+  - final output  
+  and matched these with code results. :contentReference[oaicite:5]{index=5}
+
+## Grading Items (In-Class Assignment)
+This in-class assignment contributes up to **30% max**:
+1. (7.5%) Implement a feedforward NN with at least 1 hidden layer.
+2. (10%) Integrate and evaluate the five activation functions.
+3. (5%) Compare hidden layer outputs for each activation (screenshots).
+4. (7.5%) Manually calculate the network output for one activation. :contentReference[oaicite:6]{index=6}
+
+## Files
+```text
+.
+├─ 112101014_Lab3_InClass.ipynb
+├─ 112101014_Lab3_InClass.pdf
+└─ README.md
+````
+
+## Environment
+
+Suggested setup:
+
+* Python 3.x
+* numpy
+
+Install dependencies:
+
+```bash
+pip install numpy
+```
+
+## How to Run
+
+Open the notebook:
+
+```bash
+jupyter notebook 112101014_Lab3_InClass.ipynb
+```
+
+Then:
+
+1. Choose an activation function in the code.
+2. Run the forward pass cells.
+3. Observe and record `a1`, `z1`, `z1_aug`, and `y`.
+
+## Submission
+
+Upload both to E3:
+
+* **Report**: `StudentID_Lab3_InClass.pdf`
+* **Code**: `StudentID_Lab3_InClass.py` or `StudentID_Lab3_InClass.ipynb`
+
+Deadline is specified in the handout. Plagiarism is strictly prohibited. 
+
+# Machine Learning Lab 4 (Homework) — Gradient Descent Optimizers (MNIST Binary Classification)
+
+This repository contains my implementation for **Machine Learning Laboratory: Gradient Descent Homework**.
+
+The goal of this lab is to implement **mini-batch SGD** and its extensions — **Momentum**, **Nesterov Momentum**, and **Adam** — **from scratch using NumPy**, then apply them to a **binary MNIST classification** task and compare their behavior through accuracy and misclassified samples.
+
+---
+
+## Objectives
+- Implement **Mini-batch SGD (Algorithm 7.2)**.
+- Extend to:
+  - **SGD with Momentum (Algorithm 7.3)**
+  - **SGD with Nesterov Momentum (Eq. 7.34)**
+  - **Adam Optimizer (Algorithm 7.4)**
+- Build a **binary classifier** on MNIST:
+  - “Is this the target digit or not?”
+- Compare optimizers using:
+  - **Test accuracy**
+  - **At least 5 misclassified samples** with true/predicted labels.
+
+---
+
+## Key Rules / Constraints
+- **NumPy-only** implementation for ML logic.
+- **Do not use** external ML libraries such as **scikit-learn**, **PyTorch**, etc.
+- You may implement all optimizers in:
+  - one file with selectable modes, or
+  - separate files.
+
+---
+
+## Target Digit
+Use the **last digit of your student ID** as:
+
+```python
+TARGET_DIGIT = <last_digit_of_student_id>
+````
+
+Convert labels to binary:
+
+* `1` if label == TARGET_DIGIT
+* `0` otherwise
+
+---
+
+## Dataset
+
+MNIST is provided in IDX format:
+
+* `train-images.idx3-ubyte__`
+* `train-labels.idx1-ubyte__`
+* `t10k-images.idx3-ubyte__`
+* `t10k-labels.idx1-ubyte__`
+
+Images should be normalized to `[0,1]`. A bias term is added to features before training.
+
+---
+
+## What I Implemented
+
+### 1. Core Functions
+
+* `sigmoid(z)`
+* binary prediction with threshold (e.g., 0.5)
+* accuracy evaluation
+
+### 2. Optimizers
+
+* **Mini-batch SGD**
+* **SGD + Momentum**
+* **SGD + Nesterov Momentum**
+* **Adam**
+
+Each optimizer:
+
+* trains a linear binary classifier with sigmoid output
+* logs training status (loss/accuracy)
+* evaluates test accuracy
+* shows misclassified samples
+
+### 3. Misclassification Visualization
+
+Displays at least 5 incorrect test predictions:
+
+* reshaped 28×28 images
+* annotated with:
+
+  * `T:` true label (binary)
+  * `P:` predicted label (binary)
+
+---
+
+## Grading Breakdown (Homework — 70% Max)
+
+### Implementation (50%)
+
+1. Correctly implemented, runnable, and shows accuracy + misclassified samples:
+
+   * (15%) Mini-batch SGD
+   * (10%) SGD with Momentum
+   * (5%)  SGD with Nesterov Momentum
+   * (15%) Adam
+2. (5%) Compare accuracy and misclassified samples across methods
+
+### Conceptual Questions (20%)
+
+1. Which optimizer gave the best test accuracy? Why?
+2. Differences in stability, convergence speed, or misclassification types
+3. Effects of learning rate, batch size, and momentum
+
+---
+
+## Suggested Repository Structure
+
+```text
+.
+├─ 112101014_Lab4_Homework.ipynb
+├─ 112101014_Lab4_Homework.pdf
+├─ train-images.idx3-ubyte__
+├─ train-labels.idx1-ubyte__
+├─ t10k-images.idx3-ubyte__
+├─ t10k-labels.idx1-ubyte__
+└─ README.md
+```
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* numpy
+* matplotlib
+
+Install:
+
+```bash
+pip install numpy matplotlib
+```
+
+---
+
+## How to Run
+
+### Jupyter Notebook
+
+Open and run:
+
+```bash
+jupyter notebook 112101014_Lab4_Homework.ipynb
+```
+
+### (Optional) Python Script
+
+If you export a script:
+
+```bash
+python 112101014_Lab4_Homework.py
+```
+
+---
+
+## Expected Outputs
+
+For each optimizer:
+
+* Training logs (loss/accuracy)
+* **Final test accuracy**
+* **Misclassified sample visualization**
+* A short comparison summary
+
+---
+
+## Submission
+
+Upload to E3:
+
+1. **Report**: `StudentID_Lab4_Homework.pdf`
+2. **Code**: `StudentID_Lab4_Homework.py` or `StudentID_Lab4_Homework.ipynb`
+
+---
+
+## Academic Integrity
+
+Plagiarism is strictly prohibited. Ensure your work is original.
+
+---
+
+## Notes
+
+This README follows the requirements and rubric described in the provided Lab 4 homework handout. 
+
