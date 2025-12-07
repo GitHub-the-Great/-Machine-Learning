@@ -2249,3 +2249,196 @@ Then the script will:
 
 Plagiarism is strictly prohibited. 
 
+# Machine Learning Lab 9 (Homework) — GAN vs CycleGAN on FashionMNIST & CIFAR-10
+
+This repository contains my implementation for **Machine Learning Laboratory: GAN Homework**.
+
+The homework extends the in-class GAN assignment to **new datasets** and introduces a **CycleGAN-style** approach, with an emphasis on **multi-class generation**, **style mimicry**, and a structured **comparison between GAN and CycleGAN**. :contentReference[oaicite:0]{index=0}
+
+---
+
+## Objectives
+- Reuse and adapt in-class GAN code to:
+  - **FashionMNIST**
+  - **CIFAR-10**
+- Train generative models on **at least 3 classes per dataset**.
+- Implement a **CycleGAN-style generator and discriminator** for the same class sets.
+- Explore:
+  - diversity vs mode collapse
+  - class structure preservation
+  - style mimic behavior
+- Provide clear visual and/or simple quantitative comparisons. :contentReference[oaicite:1]{index=1}
+
+---
+
+## Assignment Overview
+
+### Part 1 — GAN on New Datasets
+For both FashionMNIST and CIFAR-10:
+- Pick **≥ 3 classes** per dataset.
+- Train a GAN **per class** (via filtering / class-conditional-by-selection).
+- Visualize:
+  - **Real**
+  - **Fake**
+  - **Mimic** (style-targeted generation)
+
+Implementation options:
+- One model per class, or
+- A unified loader that trains class-by-class. :contentReference[oaicite:2]{index=2}
+
+### Part 2 — CycleGAN for Same Tasks
+- Adapt a basic CycleGAN-style architecture.
+- Train CycleGAN on the **same chosen classes**.
+- Visualize:
+  - **Real**
+  - **Fake**
+  - **Mimic**
+- Optionally experiment with:
+  - one-directional mapping
+  - cycle consistency variations. :contentReference[oaicite:3]{index=3}
+
+### Part 3 — GAN vs CycleGAN Comparison
+- Choose at least one comparison angle:
+  - visual diversity
+  - sharpness
+  - mimic accuracy / style fidelity
+  - training stability
+- Provide:
+  - **≥ 3 side-by-side comparisons** for the same class across both models. :contentReference[oaicite:4]{index=4}
+
+---
+
+## Mimic Mode (Style Targeting)
+This homework requires an explicit **mimic mechanism**:
+
+- **GAN**: optimize the **latent vector** \( z \) to match a target real image style.
+- **CycleGAN**: optimize the **input image** (or mapping behavior) to mimic a target real instance.
+
+You should generate **multiple mimic samples** demonstrating convergence toward the target style. :contentReference[oaicite:5]{index=5}
+
+---
+
+## Grading (Homework — 70% Max)
+
+### Implementation (50%)
+1. **(15%)** GAN on FashionMNIST & CIFAR-10  
+   - ≥ 3 classes per dataset  
+   - real/fake/mimic visualizations  
+2. **(15%)** CycleGAN on the same classes  
+   - generator/discriminator + cycle consistency  
+   - outputs visualized  
+3. **(10%)** Mimic mode implementation  
+4. **(10%)** GAN vs CycleGAN comparison  
+   - ≥ 3 visual comparisons  
+
+### Questions (20%)
+- Which model is more realistic/varied and why?
+- How did mimic mode perform across models?
+- How would you improve results?  
+  (architecture, losses, normalization, training tricks, etc.) :contentReference[oaicite:6]{index=6}
+
+---
+
+## Datasets
+- **FashionMNIST** (grayscale, 28×28)
+- **CIFAR-10** (RGB, 32×32)
+
+Example class choices:
+- FashionMNIST: T-shirt/top (0), Trouser (1), Coat (4), etc.
+- CIFAR-10: Airplane (0), Cat (3), Dog (5), etc. :contentReference[oaicite:7]{index=7}
+
+---
+
+## Suggested Repository Structure
+```text
+.
+├─ 112101014_Lab9_Homework.ipynb
+├─ 112101014_Lab9_Homework.pdf
+├─ src/                          # (optional) modularized code
+│  ├─ gan.py
+│  ├─ cyclegan.py
+│  ├─ mimic.py
+│  ├─ data.py
+│  └─ utils.py
+├─ outputs/
+│  ├─ fashion/
+│  │  ├─ class_0/
+│  │  ├─ class_1/
+│  │  └─ class_4/
+│  └─ cifar/
+│     ├─ class_0/
+│     ├─ class_3/
+│     └─ class_5/
+└─ README.md
+````
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* torch
+* torchvision
+* numpy
+* matplotlib
+
+Install:
+
+```bash
+pip install torch torchvision numpy matplotlib
+```
+
+---
+
+## How to Run
+
+### Notebook
+
+```bash
+jupyter notebook 112101014_Lab9_Homework.ipynb
+```
+
+### (Optional) Script Mode
+
+If you refactor into scripts:
+
+```bash
+python src/gan.py --dataset fashion --classes 0 1 4
+python src/gan.py --dataset cifar --classes 0 3 5
+
+python src/cyclegan.py --dataset fashion --classes 0 1 4
+python src/cyclegan.py --dataset cifar --classes 0 3 5
+
+python src/mimic.py --model gan --dataset fashion --class_id 0
+python src/mimic.py --model cyclegan --dataset cifar --class_id 3
+```
+
+---
+
+## Expected Outputs
+
+For each chosen class:
+
+* **Real / Fake / Mimic** image grids
+* Training logs for G/D (loss trends)
+* At least **3 GAN vs CycleGAN side-by-side comparisons**
+
+Include screenshots of these results in the last pages of the provided PDF report. 
+
+---
+
+## Submission
+
+Upload to E3:
+
+1. **Report**: `StudentID_Lab9_Homework.pdf`
+2. **Code**: `StudentID_Lab9_Homework.py` or `.ipynb`
+
+Deadline:
+
+* **Sunday, 21:00 PM**
+
+Plagiarism is strictly prohibited. 
+
