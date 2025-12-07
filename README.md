@@ -1184,3 +1184,163 @@ Deadline: **16:20 PM**.
 
 Plagiarism is strictly prohibited. Ensure your work is original. 
 
+# Machine Learning Lab 6 (Homework) — CNN Cats vs Dogs (Keras/TensorFlow)
+
+This repository contains my implementation for **Machine Learning Laboratory: CNN Homework**.  
+The goal of this assignment is to **train a Convolutional Neural Network (CNN) from scratch** to classify **cats vs. dogs** using the provided dataset and starter template, then **improve validation accuracy** by redesigning and fine-tuning the architecture. :contentReference[oaicite:0]{index=0}
+
+---
+
+## Objectives
+- Train a CNN for **binary image classification** (cat = 0, dog = 1).
+- Start from the baseline template model (which is intentionally not strong).
+- Improve performance by:
+  - modifying CNN depth/width and layer configs
+  - adding **data augmentation**
+  - applying regularization such as **Dropout** and **BatchNormalization**
+  - exploring custom pooling/structure ideas  
+  while keeping the model **fully self-designed**. :contentReference[oaicite:1]{index=1}
+
+---
+
+## Key Rules / Constraints
+- **No transfer learning.**
+- **Do not use pre-trained models** like VGG, ResNet, EfficientNet, etc.  
+  (No imports from `keras.applications`.) :contentReference[oaicite:2]{index=2}
+- Your model must be trained **from scratch** using Keras/TensorFlow layers.
+- The report must briefly explain your redesigned model and performance gains. :contentReference[oaicite:3]{index=3}
+
+---
+
+## Dataset
+The dataset is a cats vs dogs image set (~25,000 images) loaded via the template’s Google Drive download step using `gdown`.  
+Images are resized and normalized to `[0, 1]`.  
+The template uses a `tf.data.Dataset` pipeline with shuffling, batching, and a train/test split by `take()` and `skip()`. :contentReference[oaicite:4]{index=4}
+
+---
+
+## Baseline Model (Template)
+The provided baseline is a simple Sequential CNN with stacked Conv2D + MaxPooling blocks and a Dense classifier ending with:
+- `Dense(1, activation="sigmoid")`
+- `loss="binary_crossentropy"`
+- `optimizer=Adam`  
+
+This baseline is meant as a starting point and **does not achieve high accuracy**. :contentReference[oaicite:5]{index=5}
+
+---
+
+## What I Changed (Summary)
+In my improved version, I focused on:
+- **Deeper feature extraction** with more structured convolutional blocks.
+- **Regularization** to reduce overfitting:
+  - Dropout
+  - BatchNormalization
+- **Data augmentation** to improve generalization.
+- **Hyperparameter tuning** (learning rate, batch size, epochs) and optional callbacks
+  such as learning-rate reduction and early stopping.
+
+(Details and model summary are included in the homework report.) :contentReference[oaicite:6]{index=6}
+
+---
+
+## Evaluation Outputs
+The assignment requires including:
+- **Model summary**
+- **Training/validation accuracy & loss plots**
+- **Confusion matrix**
+- **Classification report**  
+
+These should be captured and placed in the last pages of the provided PDF report template. :contentReference[oaicite:7]{index=7}
+
+---
+
+## Grading Breakdown (Homework — 70%)
+**Implementation (45%)**
+1. (5%) Fine-tuning to achieve better accuracy  
+2. (20%) Model redesign with advanced techniques  
+   (e.g., augmentation, Dropout, BatchNorm, self-designed structures)
+3. (15%) Demonstrate significantly improved **validation accuracy** vs baseline  
+4. (5%) Include all required evaluation results  
+
+**Questions (25%)**
+5. Architecture changes & rationale  
+6. Overfitting reduction methods & evidence from curves  
+7. Error analysis from the confusion matrix and improvement ideas :contentReference[oaicite:8]{index=8}
+
+---
+
+## Repository Structure (Suggested)
+```text
+.
+├─ 112101014_Lab6_Homework.ipynb
+├─ 112101014_Lab6_Homework.pdf
+├─ student_ID.keras                 # saved trained model
+└─ README.md
+````
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* TensorFlow / Keras
+* numpy
+* pandas
+* matplotlib
+* seaborn (for confusion matrix visualization)
+
+Install (example):
+
+```bash
+pip install tensorflow numpy pandas matplotlib seaborn gdown
+```
+
+---
+
+## How to Run
+
+### Jupyter Notebook
+
+Open and run:
+
+```bash
+jupyter notebook 112101014_Lab6_Homework.ipynb
+```
+
+The notebook will:
+
+1. Download and unzip the dataset.
+2. Build the baseline CNN.
+3. Train and validate.
+4. Run your improved architecture.
+5. Save the model as:
+
+```python
+model.save("student_ID.keras")
+```
+
+6. Generate plots and evaluation reports. 
+
+---
+
+## Submission
+
+Upload to E3:
+
+1. **Report**: `StudentID_Lab6_Homework.pdf`
+2. **Code**: `StudentID_Lab6_Homework.py` or `StudentID_Lab6_Homework.ipynb`
+
+Deadline: **16:20 PM**.
+Plagiarism is strictly prohibited. 
+
+---
+
+## Notes
+
+* Focus on **clear before/after comparison** in your report:
+  baseline vs improved validation accuracy,
+  plus evidence from training/validation curves.
+* If accuracy improves but overfitting appears,
+  strengthen augmentation/regularization or adjust learning rate/epochs. 
