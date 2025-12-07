@@ -1658,3 +1658,594 @@ Deadline:
 
 Plagiarism is strictly prohibited. Ensure your implementation and report are your own work. 
 
+# Machine Learning Lab 7 (In-Class) — Vanilla RNN from Scratch (Sentence Sentiment)
+
+This repository contains my **Lab 7 In-Class Assignment** for the Machine Learning laboratory on **LSTM-RNN**.  
+In this in-class task, I implement a **basic Vanilla RNN** for simple **sequence (sentence) classification** using **PyTorch**, but **without** any high-level RNN modules or built-in optimizers. The model predicts whether a short sentence is **"good" (1)** or **"bad" (0)**. :contentReference[oaicite:0]{index=0}
+
+---
+
+## Objectives
+- Implement a **Vanilla RNN** hidden state update step-by-step over a sequence.
+- Build a simple **linear output layer** for sentence classification.
+- Perform **manual SGD parameter updates** using gradients.
+- Understand how the **hidden state summarizes past information**.
+- Visualize the **training loss curve** and test predictions on simple sentences. :contentReference[oaicite:1]{index=1}
+
+---
+
+## Key Rules / Constraints
+- **Do not use**:
+  - `nn.RNN`
+  - `nn.LSTM`
+  - `optim.SGD` (or other built-in optimizers)
+- Implement the RNN computation and parameter updates manually.
+- Use the provided toy vocabulary and training samples. :contentReference[oaicite:2]{index=2}
+
+---
+
+## Model Formulation
+
+### Hidden State Update
+For each time step:
+\[
+s_t = \phi(Ws_{t-1} + Ux_t + b)
+\]
+where:
+- \( s_t \) is the hidden state
+- \( x_t \) is a one-hot word vector
+- \( \phi \) is an activation function (as used in the template)
+
+### Output Layer
+After the final time step:
+\[
+\text{logits} = W_{\text{out}} s_T + b_{\text{out}}
+\]
+Prediction is obtained by `argmax(logits)`. :contentReference[oaicite:3]{index=3}
+
+---
+
+## What I Implemented
+
+### 1. Vocabulary & One-Hot Encoding
+A small fixed vocab:
+```python
+vocab = { "The": 0, "movie": 1, "is": 2, "good": 3, "bad": 4 }
+````
+
+and `word_to_onehot()`.
+
+### 2. Weight Initialization
+
+Manually initialize:
+
+* `W` (n × n)
+* `U` (n × m)
+* `b` (n × 1)
+* `W_out` (2 × n)
+* `b_out` (2 × 1) 
+
+### 3. Forward Pass (RNN Unrolling)
+
+For each sentence:
+
+* start with `s_prev = zeros(n, 1)`
+* iterate through words:
+
+  * compute `s_t`
+  * update `s_prev`
+
+### 4. Manual SGD Updates
+
+After `loss.backward()`:
+
+* update each parameter with:
+  [
+  \theta \leftarrow \theta - \eta \cdot \nabla_\theta
+  ]
+* then zero out gradients. 
+
+### 5. Visualization
+
+Plot the **training loss curve** across epochs.
+
+### 6. Testing
+
+Verify the model predicts:
+
+* `["The", "movie", "is", "bad"]` → 0
+* `["The", "movie", "is", "good"]` → 1 
+
+---
+
+## Grading (In-Class — 30% Max)
+
+**Implementation**
+
+1. (5%) Correctly initialize all weights
+2. (5%) Correct hidden state update + output logits
+3. (5%) Correct manual SGD updates
+4. (5%) Correct predictions on test sentences
+
+**Questions**
+5. (5%) What does ( s_t ) represent at each time step?
+6. (5%) Why are RNNs hard to train? 
+
+---
+
+## Files
+
+```text
+.
+├─ 112101014_Lab7_InClass.ipynb
+├─ 112101014_Lab7_InClass.pdf
+└─ README.md
+```
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* torch
+* matplotlib
+
+Install:
+
+```bash
+pip install torch matplotlib
+```
+
+---
+
+## How to Run
+
+### Jupyter Notebook
+
+```bash
+jupyter notebook 112101014_Lab7_InClass.ipynb
+```
+
+Run all cells to:
+
+* train the RNN with manual updates
+* print loss checkpoints
+* show the loss curve
+* print test predictions
+
+---
+
+## Submission
+
+Upload to E3:
+
+1. **Report**: `StudentID_Lab7_InClass.pdf`
+
+   * Include screenshots of your results in the last pages.
+2. **Code**: `StudentID_Lab7_InClass.py` or `StudentID_Lab7_InClass.ipynb`
+
+Deadline: **16:20 PM**. 
+
+---
+
+## Academic Integrity
+
+Plagiarism is strictly prohibited. 
+
+# Machine Learning Lab 8 (Homework) — Vision Transformer (ViT) for Defect Detection
+
+This repository contains my implementation for **Machine Learning Laboratory: Transformer Homework**.
+
+In this assignment, I implement a **Vision Transformer (ViT)** from scratch using **PyTorch** and apply it to an **industrial defect detection** dataset with **6 classes**. Each image is treated as a sequence of non-overlapping patches, and classification is performed using a **[CLS] token (or pooling)** followed by an MLP head.
+
+---
+
+## Objectives
+- Understand how ViT converts images into patch tokens and models global relationships with self-attention.
+- Manually implement:
+  - **Patch embedding**
+  - **Positional encoding**
+  - **Transformer encoder** (Multi-Head Self-Attention, MLP, LayerNorm, residual connections)
+  - **Classification head**
+- Train the model on a real-world defect dataset.
+- Evaluate performance on an unseen test split.
+- Tune hyperparameters to improve test accuracy.
+
+---
+
+## Key Rules / Constraints
+- **No prebuilt ViT libraries/modules**:
+  - Do NOT use `torchvision.models.vit`
+  - Do NOT use `timm.create_model`
+  - Do NOT use high-level Transformer shortcuts
+- The ViT architecture must be implemented **manually**.
+- You must **split the raw dataset yourself** into:
+  - **70% training**
+  - **30% testing**
+- Hyperparameter tuning is required.
+
+---
+
+## Dataset
+The defect dataset contains 6 categories:
+
+```text
+crazing
+inclusion
+patches
+pitted_surface
+rolled-in_scale
+scratches
+````
+
+You will:
+
+1. Upload and unzip the dataset.
+2. Split by class into train/test folders.
+3. Use `ImageFolder` with custom transforms.
+
+### Suggested transforms
+
+* Resize to **28×28**
+* Convert to **grayscale (1 channel)**
+* Normalize (e.g., mean=0.5, std=0.5)
+
+---
+
+## Model Overview
+
+### ViT Pipeline
+
+1. **Patch Embedding**
+
+   * Split image into **non-overlapping P×P patches**.
+   * Flatten each patch.
+   * Project to embedding dimension `dim`.
+   * A practical implementation uses `Conv2d` where:
+
+     * `kernel_size = patch_size`
+     * `stride = patch_size`
+
+2. **Add [CLS] Token**
+
+   * Prepend a learnable token to the patch sequence.
+
+3. **Positional Embedding**
+
+   * Add learnable positional embeddings to retain spatial order.
+
+4. **Transformer Encoder**
+
+   * Repeated blocks of:
+
+     * `LayerNorm → Multi-Head Self-Attention → Residual`
+     * `LayerNorm → FeedForward (MLP) → Residual`
+
+5. **Classification Head**
+
+   * Use the **[CLS] output** (or mean pooling) → MLP → logits.
+
+---
+
+## What I Implemented
+
+* `PreNorm`
+* `FeedForward`
+* `Attention`
+* `Transformer`
+* `ViT`
+* Training loop
+* Evaluation loop
+* Visualization tools:
+
+  * **Confusion matrix**
+  * **Classwise example predictions** (24 images, 4 per class)
+
+---
+
+## Hyperparameters (Example Starting Point)
+
+You should adjust these for best performance:
+
+```python
+image_size = 28
+patch_size = 4
+num_classes = 6
+dim = 64
+depth = 6
+heads = 4
+mlp_dim = 128
+dropout = 0.1
+emb_dropout = 0.1
+lr = 3e-3
+batch_size = 32 or 64
+epochs = 30–100
+```
+
+---
+
+## Grading Overview
+
+* **ViT model design from scratch** (major portion)
+* **Training & tuning** (must reach **≥ 60%** test accuracy; higher is better)
+* Correct **evaluation loop**
+* Required **visualizations**
+* Report quality and conceptual answers
+
+---
+
+## Required Report Items
+
+Include screenshots of:
+
+1. **Model summary** and **total parameters**
+2. **Final training result** (epochs, final test loss & accuracy)
+3. **Confusion matrix**
+4. **24 example predictions** (4 images per class)
+
+Also answer questions on:
+
+* Patch embedding & positional encoding
+* Hyperparameter tuning choices
+* ViT vs CNN comparison
+* Final accuracy discussion
+* ViT end-to-end explanation based on the original paper
+
+---
+
+## Repository Structure (Suggested)
+
+```text
+.
+├─ 112101014_Lab8_Homework.ipynb
+├─ 112101014_Lab8_Homework.pdf
+├─ dataset.zip
+├─ dataset/                       # unzipped raw data
+├─ dataset_split/
+│  ├─ train/
+│  └─ test/
+├─ 112101014_Lab8_Homework.pth    # trained weights
+└─ README.md
+```
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* torch
+* torchvision
+* einops
+* numpy
+* matplotlib
+* seaborn
+* scikit-learn (for confusion matrix)
+
+Install:
+
+```bash
+pip install torch torchvision einops numpy matplotlib seaborn scikit-learn
+```
+
+---
+
+## How to Run
+
+### 1) Prepare data
+
+* Put your dataset zip in the project root.
+* Update:
+
+  ```python
+  zip_path = "dataset.zip"
+  ```
+* Run the unzip + split cells to create:
+
+  ```text
+  dataset_split/train
+  dataset_split/test
+  ```
+
+### 2) Train
+
+* Initialize the ViT model.
+* Set optimizer (e.g., Adam/AdamW).
+* Increase `N_EPOCHS` beyond the template default.
+
+### 3) Evaluate & Visualize
+
+* Run the evaluation function to report:
+
+  * test loss
+  * test accuracy
+* Generate:
+
+  * confusion matrix
+  * 24 classwise prediction examples
+
+### 4) Save model
+
+```python
+torch.save(model.state_dict(), "112101014_Lab8_Homework.pth")
+```
+
+---
+
+## Submission Checklist
+
+Upload **all three files** to E3:
+
+1. `StudentID_Lab8_Homework.pdf`
+2. `StudentID_Lab8_Homework.py` or `.ipynb`
+3. `StudentID_Lab8_Homework.pth`
+
+Missing any one file may result in **no grade**.
+
+---
+
+## Academic Integrity
+
+Plagiarism is strictly prohibited. Ensure your implementation and report are your own work.
+
+```
+
+Based on the provided Lab 8 Transformer Homework handout. :contentReference[oaicite:0]{index=0}
+```
+
+# Machine Learning Lab 8 (In-Class) — GAN on MNIST (PyTorch)
+
+This repository contains my **Lab 8 In-Class Assignment** for the Machine Learning laboratory on **Generative Adversarial Networks (GANs)**.  
+The goal is to implement and complete a GAN training loop in **PyTorch** to generate handwritten **MNIST** digit images, focusing on the **last digit of my student ID** as the target style. :contentReference[oaicite:0]{index=0}
+
+---
+
+## Objectives
+- Understand the training dynamics of a **GAN**.
+- Implement the **adversarial loss** using **binary cross-entropy (BCE)**.
+- Train:
+  - a **Generator (G)** that maps random noise to digit-like images
+  - a **Discriminator (D)** that distinguishes real vs fake images
+- Visualize generated outputs across epochs to observe model evolution. :contentReference[oaicite:1]{index=1}
+
+---
+
+## Key Rules / Constraints
+- Use **PyTorch** for model building and training.
+- **Do not use higher-level GAN wrappers/libraries**.
+- Train the GAN **only on a single digit class**:
+  - If your student ID ends in `k`, set `target_digit = k`. :contentReference[oaicite:2]{index=2}
+
+---
+
+## Dataset
+- **MNIST (train split)** is downloaded automatically.
+- The dataset is **filtered** to only include the `target_digit`.
+- The training set is **limited to 5000 samples** for this in-class task. :contentReference[oaicite:3]{index=3}
+
+---
+
+## Model Architecture (My Implementation)
+This in-class submission uses a simple **MLP-based GAN**:
+
+### Generator
+- Input: `z_dim = 100` Gaussian noise
+- MLP with LeakyReLU + BatchNorm stacks
+- Output: 784-dim vector reshaped to 28×28
+- Final activation: **Tanh** to match normalized image range `[-1, 1]`. :contentReference[oaicite:4]{index=4}
+
+### Discriminator
+- Input: flattened 784-dim image
+- MLP with LeakyReLU
+- Final activation: **Sigmoid** for real/fake probability. :contentReference[oaicite:5]{index=5}
+
+---
+
+## Training Setup
+- Loss: `nn.BCELoss()`
+- Optimizers: **Adam**
+  - learning rate `lr = 0.0002`
+  - `betas = (0.5, 0.999)`
+- Batch size: `64`
+- Epochs: `100`
+- Device: CUDA if available. :contentReference[oaicite:6]{index=6}
+
+Training procedure:
+1. Sample real images (target digit only).
+2. Generate fake images from random noise.
+3. Train **D** on:
+   - real labeled as 1
+   - fake labeled as 0
+4. Train **G** to fool **D**:
+   - fake labeled as 1 for generator loss. 
+
+---
+
+## Outputs & Visualization
+The code saves results under:
+```text
+gan_results/
+````
+
+Including:
+
+* Real digit grid before training
+* Generated grids at:
+
+  * Epoch 1, 10, 20, ..., 100
+* Loss curve plot for D and G
+* Final real vs generated comparison. 
+
+---
+
+## Grading (In-Class — 30% Max)
+
+* (10%) Implement GAN training loop (G/D + BCE)
+* (10%) Code runs end-to-end and shows losses + generated samples
+* (5%) Correct target digit style (last digit of student ID)
+* (5%) Brief discussion of results
+  Deadline: **16:20 PM**. 
+
+---
+
+## Repository Structure
+
+```text
+.
+├─ 112101014_Lab8_InClass.py
+├─ 112101014_Lab8_InClass.pdf
+├─ gan_results/
+│  ├─ real_digit_<k>.png
+│  ├─ generated_epoch_*.png
+│  ├─ loss_plot.png
+│  └─ final_comparison.png
+└─ README.md
+```
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* torch
+* torchvision
+* numpy
+* matplotlib
+
+Install:
+
+```bash
+pip install torch torchvision numpy matplotlib
+```
+
+---
+
+## How to Run
+
+```bash
+python 112101014_Lab8_InClass.py
+```
+
+Before running, ensure:
+
+```python
+target_digit = <last_digit_of_student_id>
+```
+
+Then the script will:
+
+1. Download and filter MNIST
+2. Train the GAN
+3. Save images and loss plots to `gan_results/`. 
+
+---
+
+## Academic Integrity
+
+Plagiarism is strictly prohibited. 
+
