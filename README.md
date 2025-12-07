@@ -853,3 +853,334 @@ Deadline: **16:20 PM**.
 
 Plagiarism is strictly prohibited. Submitting copied work will result in penalties. 
 
+# Machine Learning Lab 5 (Homework) — Regularization (Early Stopping & Weight Decay)
+
+This repository contains my implementation for **Machine Learning Laboratory: Regularization Homework**.
+
+The assignment focuses on preventing overfitting by implementing and comparing:
+- **Early Stopping (validation-based regularization)**
+- **Weight Decay (L2 regularization)**
+
+These methods are applied to the **MNIST** task using an **existing MLP structure** with:
+- **Single hidden layer + ReLU**
+- **Softmax output** for multi-class classification (with evaluation later aligned to the assignment’s setup). :contentReference[oaicite:0]{index=0}
+
+---
+
+## Objectives
+- Understand why regularization is important for generalization.
+- Implement **early stopping** and **L2 weight decay** in a NumPy-based MLP.
+- Visualize and interpret:
+  - training vs validation **loss curves**
+  - training vs validation **accuracy curves**
+- Compare model behavior and inspect misclassified samples. :contentReference[oaicite:1]{index=1}
+
+---
+
+## Key Rules / Constraints
+- Use the provided neural network structure.
+- **Do not use external ML libraries** (e.g., scikit-learn, PyTorch). :contentReference[oaicite:2]{index=2}
+- Implement the required utilities and training logic yourself using **NumPy**.
+- You may organize code as:
+  - a single file with selectable modes, or
+  - separate files for each method. :contentReference[oaicite:3]{index=3}
+
+---
+
+## What I Implemented
+
+### Utilities
+- `shuffle_numpy(X, y)`
+- `split_train_val(X, y, val_ratio=0.2)`
+- `one_hot(y, num_classes)`
+- `accuracy(Y_pred, Y_true)` :contentReference[oaicite:4]{index=4}
+
+### Model (MLP)
+- Forward:
+  - `ReLU` hidden activation
+  - `Softmax` output
+- Loss:
+  - Cross-entropy
+  - **+ L2 penalty** when weight decay is enabled
+- Backward:
+  - Gradient updates including **λ * W** terms for L2 regularization. :contentReference[oaicite:5]{index=5}
+
+### Training
+- Baseline (no regularization)
+- **Early Stopping**
+  - Stop if validation loss doesn’t improve for `patience` epochs
+- **Weight Decay**
+  - Experiment with **3 different λ values**
+- (Optional/Bonus if you tried) early stopping + weight decay together
+
+### Plotting
+- Training vs validation loss curves
+- Training vs validation accuracy curves
+for each method. :contentReference[oaicite:6]{index=6}
+
+---
+
+## Grading Breakdown (70% Max)
+
+### Implementation (50%)
+- **(20%) Early Stopping**
+- **(20%) Weight Decay (L2)**
+- **(10%) Comparison**
+  - Curves + brief discussion
+  - Results with **3 different λ values** :contentReference[oaicite:7]{index=7}
+
+### Questions (20%)
+1. Which method gave best test accuracy and why?
+2. Compare train/val loss trends for overfitting/underfitting evidence.
+3. How did λ or patience affect performance? :contentReference[oaicite:8]{index=8}
+
+---
+
+## Dataset
+MNIST in IDX format:
+- `train-images.idx3-ubyte__`
+- `train-labels.idx1-ubyte__`
+
+(And corresponding test files if included in your workspace.)  
+Images are normalized to `[0, 1]` following the template. :contentReference[oaicite:9]{index=9}
+
+---
+
+## Suggested Repository Structure
+```text
+.
+├─ 112101014_Lab5_Homework.ipynb
+├─ 112101014_Lab5_Homework.pdf
+├─ train-images.idx3-ubyte__
+├─ train-labels.idx1-ubyte__
+├─ t10k-images.idx3-ubyte__            (if provided)
+├─ t10k-labels.idx1-ubyte__            (if provided)
+└─ README.md
+````
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* numpy
+* matplotlib
+
+Install:
+
+```bash
+pip install numpy matplotlib
+```
+
+---
+
+## How to Run
+
+### Jupyter Notebook
+
+```bash
+jupyter notebook 112101014_Lab5_Homework.ipynb
+```
+
+Run all cells to:
+
+1. load and split data
+2. train baseline
+3. train early stopping model
+4. train weight decay models with multiple λ
+5. generate curves and comparisons
+
+---
+
+## Expected Outputs
+
+* Printed training logs
+* Plots:
+
+  * Loss curves (train vs val)
+  * Accuracy curves (train vs val)
+* Comparison discussion
+* Results for **3 λ values** for weight decay. 
+
+---
+
+## Submission
+
+Upload to E3:
+
+1. **Report**: `StudentID_Lab5_Homework.pdf`
+2. **Code**: `StudentID_Lab5_Homework.py` or `.ipynb`
+
+Deadline:
+
+* **Sunday, 21:00 PM**
+
+Plagiarism is strictly prohibited. 
+
+# Machine Learning Lab 5 (In-Class) — Backpropagation Autodiff (Logistic Classifier on MNIST)
+
+This repository contains my **Lab 5 In-Class Assignment** for the Machine Learning laboratory on **Backpropagation**.  
+The main goal is to integrate a simple **automatic differentiation (autodiff)** mechanism (both **forward-mode** and **reverse-mode/backprop-style**) into an **SGD-trained logistic classifier** for **MNIST binary classification**. :contentReference[oaicite:0]{index=0}
+
+---
+
+## Objectives
+- Understand the core concept of **backpropagation** in neural network training.
+- Simulate and visualize:
+  - **Primal values** through the forward pass
+  - **Forward-mode autodiff** (tangent propagation)
+  - **Reverse-mode autodiff** (adjoint/backprop propagation)
+- Interpret gradient flow using a **computational trace table** and bar-chart visualization.
+- Implement everything using **NumPy only**. :contentReference[oaicite:1]{index=1}
+
+---
+
+## Task Overview
+You will complete the provided in-class template to:
+
+1. **Load MNIST** from IDX files.
+2. Create a binary task:
+   - “**Is it the target digit or not?**”
+3. Implement/complete:
+   - `sigmoid(z)` *(optional per template)*
+   - `sigmoid_derivative(z)`
+   - `trace_autodiff_example(x1, x2)`  
+     - Produces a table containing:
+       - Primal values
+       - Forward tangents
+       - Reverse adjoints
+   - `your_sgd_logistic(X, y, eta, max_iters)`  
+     - Use last week’s SGD structure
+     - Integrate autodiff tracing at iteration 0
+4. **Predict**, compute **test accuracy**.
+5. **Show misclassified samples**.
+6. **Plot autodiff trace graphs**. :contentReference[oaicite:2]{index=2}
+
+---
+
+## Key Rules / Constraints
+- **Use only NumPy** for computations.
+- **Do not use** scikit-learn, PyTorch, TensorFlow, etc.
+- Follow the in-class template and output format. :contentReference[oaicite:3]{index=3}
+
+---
+
+## Target Digit Requirement
+Set the binary class to the **last digit of your student ID**.  
+Example:
+```python
+TARGET_DIGIT = 7
+````
+
+Label conversion:
+
+````python
+y_train_bin = np.where(y_train == TARGET_DIGIT, 1, 0)
+y_test_bin  = np.where(y_test  == TARGET_DIGIT, 1, 0)
+``` :contentReference[oaicite:4]{index=4}
+
+---
+
+## Dataset
+MNIST IDX files:
+- `train-images.idx3-ubyte__`
+- `train-labels.idx1-ubyte__`
+- `t10k-images.idx3-ubyte__`
+- `t10k-labels.idx1-ubyte__`
+
+Images are normalized to `[0, 1]`, and a **bias column** is added to `X`. :contentReference[oaicite:5]{index=5}
+
+---
+
+## Grading (In-Class — 30% Max)
+
+### Implementation
+1. **(10%)** Implement the backpropagation autodiff.
+2. **(10%)** Code runs successfully and outputs **primal/forward/reverse** traces.
+3. **(5%)** Correct `TARGET_DIGIT` rule and display results similar to the example output.
+4. **(5%)** Brief discussion explaining the graphs and results. :contentReference[oaicite:6]{index=6}
+
+---
+
+## Suggested Repository Structure
+```text
+.
+├─ 112101014_Lab5_InClass.ipynb
+├─ 112101014_Lab5_InClass.pdf
+├─ train-images.idx3-ubyte__
+├─ train-labels.idx1-ubyte__
+├─ t10k-images.idx3-ubyte__
+├─ t10k-labels.idx1-ubyte__
+└─ README.md
+````
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* numpy
+* matplotlib
+* pandas *(for trace table display, as suggested by template)*
+
+Install:
+
+```bash
+pip install numpy matplotlib pandas
+```
+
+---
+
+## How to Run
+
+### Jupyter Notebook
+
+```bash
+jupyter notebook 112101014_Lab5_InClass.ipynb
+```
+
+Run all cells to:
+
+* train the logistic classifier with SGD
+* generate the autodiff trace table
+* plot primal/forward/reverse bar charts
+* show misclassified samples
+
+---
+
+## Expected Outputs
+
+Your results should include:
+
+* Printed **test accuracy** for the binary task
+* A displayed **misclassified samples** figure
+* An **Autodiff Trace Table** (sample features)
+* Three bar charts:
+
+  1. **Primal Values**
+  2. **Forward-Mode Autodiff**
+  3. **Reverse-Mode Autodiff** 
+
+---
+
+## Submission
+
+Upload to E3:
+
+1. **Report**: `StudentID_Lab5_InClass.pdf`
+
+   * Add screenshots and short discussion in the last pages of the provided PDF.
+2. **Code**: `StudentID_Lab5_InClass.py` or `StudentID_Lab5_InClass.ipynb`
+
+Deadline: **16:20 PM**. 
+
+---
+
+## Academic Integrity
+
+Plagiarism is strictly prohibited. Ensure your work is original. 
+
