@@ -695,3 +695,161 @@ Plagiarism is strictly prohibited. Ensure your work is original.
 
 This README follows the requirements and rubric described in the provided Lab 4 homework handout. 
 
+# Machine Learning Lab 4 (In-Class) — Stochastic Gradient Descent (SGD) on MNIST Binary Classification
+
+This repository contains my **Lab 4 In-Class** work for the Machine Learning laboratory on **Gradient Descent**.  
+In this assignment, I implement **Stochastic Gradient Descent (SGD)** using **one sample at a time** (Algorithm 7.1), apply the **sigmoid** function for **binary classification**, and evaluate performance on **MNIST** with **accuracy** and **misclassified samples visualization**, using **NumPy only** for model computations. :contentReference[oaicite:0]{index=0}
+
+---
+
+## Objectives
+- Understand and implement **SGD (one-sample update)** based on Algorithm 7.1.
+- Perform binary classification using the **sigmoid** activation.
+- Manually update model weights using the gradient of the loss.
+- Practice NumPy-based computation on real MNIST data.
+- Evaluate results using:
+  - **Test accuracy**
+  - **Visualization of misclassified samples**. :contentReference[oaicite:1]{index=1}
+
+---
+
+## Task Overview
+You will complete the provided template to build a binary classifier answering:
+
+> **“Is this target digit or not?”**
+
+Key steps include:
+1. Load MNIST IDX files.
+2. Implement:
+   - `sigmoid(z)`
+   - `sgd_logistic(X, y, eta, max_iters)`
+3. Choose `TARGET_DIGIT`.
+4. Convert labels into binary:
+   - `1` if label == `TARGET_DIGIT`
+   - `0` otherwise
+5. Add a bias term to input features.
+6. Train with SGD.
+7. Predict probabilities and compute accuracy.
+8. Show misclassified test images. :contentReference[oaicite:2]{index=2}
+
+---
+
+## Important Rules
+- Use **only NumPy** for computations.
+- **Do not** use scikit-learn, PyTorch, TensorFlow, etc.
+- Follow the in-class template structure. :contentReference[oaicite:3]{index=3}
+
+---
+
+## Target Digit Rule
+Set the binary target class to the **last digit of your student ID**.  
+For example, if your ID ends in **4**, then:
+```python
+TARGET_DIGIT = 4
+````
+
+This is a graded requirement. 
+
+---
+
+## Dataset
+
+MNIST is provided in IDX format:
+
+* `train-images.idx3-ubyte__`
+* `train-labels.idx1-ubyte__`
+* `t10k-images.idx3-ubyte__`
+* `t10k-labels.idx1-ubyte__`
+
+Images are flattened and normalized to `[0, 1]` in the template. 
+
+---
+
+## Suggested Repository Structure
+
+```text
+.
+├─ 112101014_Lab4_InClass.ipynb
+├─ 112101014_Lab4_InClass.pdf
+├─ train-images.idx3-ubyte__
+├─ train-labels.idx1-ubyte__
+├─ t10k-images.idx3-ubyte__
+├─ t10k-labels.idx1-ubyte__
+└─ README.md
+```
+
+---
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* numpy
+* matplotlib
+
+Install dependencies:
+
+```bash
+pip install numpy matplotlib
+```
+
+---
+
+## How to Run
+
+### Jupyter Notebook
+
+```bash
+jupyter notebook 112101014_Lab4_InClass.ipynb
+```
+
+### Python Script (if exported)
+
+```bash
+python 112101014_Lab4_InClass.py
+```
+
+---
+
+## Expected Outputs
+
+Your run should display:
+
+* **Test accuracy** (printed)
+* **At least 5 misclassified test images** with:
+
+  * `T:` true label
+  * `P:` predicted label
+    as illustrated in the example output section of the handout. 
+
+---
+
+## Grading (In-Class — 30% Max)
+
+Implementation:
+
+1. **(15%)** Implement SGD based on Algorithm 7.1.
+2. **(10%)** Model runs successfully, trains on MNIST, and outputs test accuracy.
+3. **(5%)** Set `TARGET_DIGIT` to the last digit of your student ID and display misclassified samples (≥5). 
+
+---
+
+## Submission
+
+Upload to E3:
+
+1. **Report**: `StudentID_Lab4_InClass.pdf`
+
+   * Answer all conceptual questions.
+   * Include result screenshots in the last pages of the provided PDF.
+2. **Code**: `StudentID_Lab4_InClass.py` or `StudentID_Lab4_InClass.ipynb`
+
+Deadline: **16:20 PM**. 
+
+---
+
+## Academic Integrity
+
+Plagiarism is strictly prohibited. Submitting copied work will result in penalties. 
+
