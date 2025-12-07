@@ -267,3 +267,141 @@ Late policy:
 ## Academic Integrity
 
 Plagiarism is strictly prohibited. Ensure your implementation and report are your own work. 
+
+# Machine Learning Lab 3 — Deep Neural Network (Forward Pass, MNIST)
+
+This repository contains my work for **Machine Learning Laboratory: Deep Neural Network**.  
+The assignment focuses on building a **multilayer feedforward neural network** for **multi-class classification on MNIST** using **only NumPy** (for matrix operations) and **Matplotlib/Seaborn** (for visualization). The key constraint is to implement the **forward pass only**, without backpropagation, and evaluate performance using standard multi-class metrics. :contentReference[oaicite:0]{index=0}
+
+## Objectives
+- Implement the **forward pass** of a neural network with matrix operations.
+- Apply activation functions based on textbook equations (Eq. 6.14–6.18).
+- Use **softmax** and **cross-entropy loss** for multi-class classification (Eq. 6.36–6.37).
+- Experiment with different layer sizes and activation choices.
+- Evaluate using **accuracy**, **confusion matrix**, **ROC**, and **precision/recall/F1**. :contentReference[oaicite:1]{index=1}
+
+## Key Rules / Constraints
+- Use the **MNIST dataset provided by the TA**.
+- Use **NumPy** for the model implementation.
+- Use **Matplotlib/Seaborn** for plotting.
+- **Forward pass only** (no backpropagation required in this lab).
+- You are expected to follow the provided arithmetic instructions and template structure. :contentReference[oaicite:2]{index=2}
+
+## What You Need to Implement
+
+### Core Components
+- **Activation functions**:
+  - ReLU
+  - tanh
+  - softplus
+  - leaky ReLU  
+- **One-hot encoding**
+- **Cross-entropy loss**
+- **Softmax**
+- **Forward pass** across multiple layers (Eq. 6.19). :contentReference[oaicite:3]{index=3}
+
+### Evaluation Utilities
+- Confusion matrix for 10 classes
+- ROC computation for multi-class
+- Metrics report:
+  - TP, FP, FN, TN per class
+  - precision, recall, F1
+  - overall accuracy. :contentReference[oaicite:4]{index=4}
+
+## Grading (Homework Assignment)
+**Implementation (50%)**
+1. (10%) Feedforward NN with **more than one hidden layer**
+2. (10%) Activation functions + softmax + cross-entropy implemented from scratch
+3. (15%) Model runs correctly and produces predictions
+4. Evaluation:
+   - (5%) Confusion matrix plot
+   - (5%) ROC curves for 10 classes
+   - (5%) Precision/Recall/F1/Overall Accuracy
+
+**Conceptual Questions (20%)**
+1. Explain your model design and improvements with before/after performance.
+2. Analyze performance: which classes are harder and why.
+
+**Submission is capped at 70% max for this homework section** per the handout. :contentReference[oaicite:5]{index=5}
+
+## Dataset
+MNIST is loaded from IDX files using the template approach:
+- `train-images.idx3-ubyte__`
+- `train-labels.idx1-ubyte__`
+- `t10k-images.idx3-ubyte__`
+- `t10k-labels.idx1-ubyte__`
+
+The template suggests using a smaller subset (e.g., first 500 train / 200 test) and allows you to experiment with these counts. :contentReference[oaicite:6]{index=6}
+
+## Suggested Repository Structure
+```text
+.
+├─ 112101014_Lab3_Homework.ipynb
+├─ 112101014_Lab3_Homework.pdf
+├─ train-images.idx3-ubyte__
+├─ train-labels.idx1-ubyte__
+├─ t10k-images.idx3-ubyte__
+├─ t10k-labels.idx1-ubyte__
+└─ README.md
+````
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* numpy
+* matplotlib
+* seaborn (optional, for confusion matrix heatmap)
+* pandas (optional, per template)
+
+Install:
+
+```bash
+pip install numpy matplotlib seaborn pandas
+```
+
+## How to Run
+
+### Jupyter
+
+Open:
+
+* `112101014_Lab3_Homework.ipynb`
+
+Run all cells to:
+
+* initialize random weights
+* perform forward passes
+* compute loss/accuracy
+* generate evaluation plots.
+
+## Expected Outputs
+
+Your notebook/script should produce:
+
+* Training loop logs across epochs
+* Best loss/accuracy summary
+* Test loss/accuracy
+* **Confusion matrix** (plotted)
+* **ROC curves** for 10 classes
+* Printed **classification report**.
+
+## Submission
+
+Upload to E3:
+
+1. **Report**: `StudentID_Lab3_Homework.pdf`
+
+   * Answer conceptual questions
+   * Include result screenshots in the last pages of the provided PDF
+2. **Code**: `StudentID_Lab3_Homework.py` or `.ipynb`
+
+Deadline:
+
+* **Sunday – 21:00 PM** (per handout). 
+
+## Academic Integrity
+
+Plagiarism is strictly prohibited. Submitting copied work may result in penalties. 
+
