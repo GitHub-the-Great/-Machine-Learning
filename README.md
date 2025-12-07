@@ -126,7 +126,6 @@ Plagiarism is strictly prohibited. Ensure your implementation and report are you
 
 This README is aligned with the lab handout requirements and task list. 
 
-````markdown
 # Machine Learning Lab 2 — Classification (Logistic & Probit Regression)
 
 This repository contains my implementation for **Machine Learning Laboratory: Logistic & Probit Regression**.  
