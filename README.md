@@ -1076,10 +1076,12 @@ TARGET_DIGIT = 7
 
 Label conversion:
 
-````python
+```python
 y_train_bin = np.where(y_train == TARGET_DIGIT, 1, 0)
 y_test_bin  = np.where(y_test  == TARGET_DIGIT, 1, 0)
-``` :contentReference[oaicite:4]{index=4}
+````
+
+:contentReference[oaicite:4]{index=4}
 
 ---
 
@@ -1493,4 +1495,166 @@ Deadline: **16:20 PM**.
 ## Academic Integrity
 
 Plagiarism is strictly prohibited. 
+
+# Machine Learning Lab 7 (Homework) — Manual LSTM Cell for MNIST
+
+This repository contains my implementation for **Machine Learning Laboratory: LSTM Homework**.  
+In this assignment, I build a **manual LSTM cell from scratch** and apply it to **MNIST digit classification** by treating each **28×28** image as a **sequence of 28 time steps** (each time step is a 28-dim row vector). :contentReference[oaicite:0]{index=0}
+
+## Objectives
+- Understand how **forget**, **input**, and **output** gates interact to update hidden and cell states.
+- Implement the **LSTM forward pass manually** using the provided equations.
+- Train the model in **PyTorch** while avoiding high-level RNN modules.
+- Implement a **testing loop** to evaluate performance on the full MNIST test set.
+- **Tune hyperparameters** to improve test accuracy.
+- Visualize prediction results on example test images. :contentReference[oaicite:1]{index=1}
+
+## Key Rules / Constraints
+- **Do not use high-level RNN modules** such as `nn.LSTM`. :contentReference[oaicite:2]{index=2}
+- The LSTM computation at each time step must be implemented manually:
+  - input gate, forget gate, output gate, candidate cell
+  - cell state and hidden state updates
+- You are allowed to change hyperparameters and **may change the optimizer** to improve accuracy. :contentReference[oaicite:3]{index=3}
+
+## LSTM Formulation (Per Time Step)
+The assignment provides the standard LSTM equations:
+- \( i_t = \sigma(W_i h_{t-1} + U_i x_t + b_i) \)
+- \( f_t = \sigma(W_f h_{t-1} + U_f x_t + b_f) \)
+- \( o_t = \sigma(W_o h_{t-1} + U_o x_t + b_o) \)
+- \( \tilde{c}_t = \tanh(W_c h_{t-1} + U_c x_t + b_c) \)
+- \( c_t = f_t \odot c_{t-1} + i_t \odot \tilde{c}_t \)
+- \( h_t = o_t \odot \tanh(c_t) \)
+
+After the final time step:
+- \( logits = W_{out} h_t + b_{out} \) :contentReference[oaicite:4]{index=4}
+
+## What You Need to Implement
+
+### 1. Manual LSTM Cell
+Implement a custom module:
+- Define weights/biases for:
+  - Forget gate
+  - Input gate
+  - Output gate
+  - Candidate cell
+- In `forward()`:
+  1. Concatenate `x` and `h_prev`
+  2. Compute gates with `sigmoid`
+  3. Compute candidate with `tanh`
+  4. Update `c_t` and `h_t` :contentReference[oaicite:5]{index=5}
+
+### 2. Manual LSTM Classifier
+- Initialize `h_t` and `c_t` to zeros.
+- Unroll over 28 time steps.
+- Use the **last hidden state** for classification via a fully connected layer. :contentReference[oaicite:6]{index=6}
+
+### 3. Training Loop
+- Use `CrossEntropyLoss`.
+- Train for multiple epochs.
+- Record **training loss**.
+
+### 4. Testing Loop
+- Evaluate on **all 10,000 test images**.
+- Print **overall test accuracy**. :contentReference[oaicite:7]{index=7}
+
+### 5. Visualization
+- Display **10 example test images** with:
+  - true label
+  - predicted label  
+  (Ideally covering digits 0–9 if possible.) :contentReference[oaicite:8]{index=8}
+
+## Grading (Homework — 70% Max)
+
+### Implementation
+1. **(30%)** Manual LSTM Cell correctly built from equations  
+2. **(15%)** Training + hyperparameter tuning (accuracy-dependent)  
+3. **(5%)** Correct testing loop over full test set  
+4. **(5%)** Visualization of 10 example predictions  
+
+### Questions
+5. **(5%)** Roles of forget/input/output/candidate components  
+6. **(5%)** What you tuned and how it affected accuracy  
+7. **(5%)** Simple RNN vs LSTM: which is better and when  
+
+(Details follow the provided handout.) :contentReference[oaicite:9]{index=9}
+
+## Hyperparameters
+The template provides default hyperparameters (e.g., `hidden_size`, `batch_size`, `learning_rate`, `num_epochs`).  
+You are required to **adjust them** to maximize test accuracy. Examples of common tuning directions:
+- Increase `hidden_size`
+- Adjust `learning_rate`
+- Change `batch_size`
+- Train longer with more `epochs` :contentReference[oaicite:10]{index=10}
+
+## Dataset
+- **MNIST** is loaded via `torchvision.datasets.MNIST`.
+- Each image is reshaped to `(batch, 28, 28)` to represent a sequence of length 28. :contentReference[oaicite:11]{index=11}
+
+## Suggested Repository Structure
+```text
+.
+├─ 112101014_Lab7_Homework.ipynb
+├─ 112101014_Lab7_Homework.pdf
+├─ data/                       # auto-downloaded MNIST
+└─ README.md
+````
+
+## Environment
+
+Recommended:
+
+* Python 3.x
+* torch
+* torchvision
+* numpy
+* matplotlib
+
+Install:
+
+```bash
+pip install torch torchvision numpy matplotlib
+```
+
+## How to Run
+
+### Jupyter Notebook
+
+Open and run:
+
+```bash
+jupyter notebook 112101014_Lab7_Homework.ipynb
+```
+
+The notebook will:
+
+1. Download MNIST
+2. Build manual LSTM cell + classifier
+3. Train the model
+4. Evaluate test accuracy
+5. Visualize 10 prediction examples
+
+## Report & Submission
+
+Upload to E3:
+
+1. **Report** with screenshots in the last pages:
+
+   * (a) Hyperparameters
+   * (b) Training loss record
+   * (c) Test accuracy
+   * (d) Prediction results
+2. **Code** in `.py` or `.ipynb`
+
+Naming:
+
+* `StudentID_Lab7_Homework.pdf`
+* `StudentID_Lab7_Homework.py` or `StudentID_Lab7_Homework.ipynb`
+
+Deadline:
+
+* **Sunday 21:00 PM** 
+
+## Academic Integrity
+
+Plagiarism is strictly prohibited. Ensure your implementation and report are your own work. 
 
