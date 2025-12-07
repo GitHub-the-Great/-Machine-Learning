@@ -1,5 +1,211 @@
 # -Machine-Learning
 
+# Machine Learning Labs & Final Project (NYCU 2025)
+
+This repository collects my implementations for the **Machine Learning Laboratory series** and related coursework deliverables, including in-class exercises, homework notebooks, and (if included) the final project. This consolidated README is refined from my existing draft notes. :contentReference[oaicite:0]{index=0}
+
+---
+
+## Contents
+- Lab 1 — Regression
+- Lab 2 — Classification (Logistic & Probit Regression)
+- Lab 3 — Deep Neural Network (Forward Pass)
+  - In-Class
+  - Homework
+- Lab 4 — Gradient Descent Optimizers
+  - In-Class (SGD)
+  - Homework (Mini-batch SGD, Momentum, Nesterov, Adam)
+- Lab 5 — Regularization & Backprop/Autodiff
+  - In-Class (Autodiff demo)
+  - Homework (Early Stopping & Weight Decay)
+- Lab 6 — Convolutional Neural Networks
+  - In-Class (2D Convolution + Edge Detection)
+  - Homework (Cats vs Dogs CNN with Keras)
+- Lab 7 — RNN / LSTM
+  - In-Class (Vanilla RNN, manual updates)
+  - Homework (Manual LSTM cell on MNIST)
+- Lab 8 — Transformers & Generative Models
+  - In-Class (GAN on MNIST)
+  - Homework (Vision Transformer for 6-class defect classification)
+- Lab 9 — Advanced GAN
+  - Homework (GAN vs CycleGAN on FashionMNIST & CIFAR-10)
+- Final Project — Metallic Surface Defect Detection (if present)
+
+---
+
+## General Notes
+- Most labs follow the course rule of implementing core logic **from scratch** using **NumPy** or **PyTorch/TensorFlow** depending on the assignment.
+- Each lab typically includes:
+  - a notebook (`.ipynb`)
+  - a report (`.pdf`)
+  - optional exported script (`.py`)
+- File names use the format:
+  - `112101014_LabX_InClass.*`
+  - `112101014_LabX_Homework.*`
+
+---
+
+## Lab Summaries
+
+### Lab 1 — Regression
+Focus:
+- Linear regression & ridge regression
+- Gradient descent training
+- MSE evaluation
+- Closed-form ridge solution
+- Predictive distribution & confidence intervals
+
+Typical outputs:
+- learned parameters
+- training loss curves
+- prediction plots with confidence bands
+
+---
+
+### Lab 2 — Classification (Logistic & Probit)
+Focus:
+- Binary classification (income > 50K task)
+- Logistic regression (sigmoid) vs probit regression (normal CDF)
+- Manual one-hot encoding + feature scaling
+- Confusion matrix, ROC curve, AUC
+
+---
+
+### Lab 3 — Deep Neural Network (Forward Pass)
+Focus:
+- Multi-layer feedforward NN for MNIST
+- **Forward pass only** (no backprop in this lab)
+- Multiple activation functions
+- Softmax + cross-entropy
+- Multi-class evaluation (confusion matrix, ROC, precision/recall/F1)
+
+---
+
+### Lab 4 — Gradient Descent Optimizers
+**In-Class**
+- SGD with one-sample updates for MNIST binary classification  
+- Target digit = last digit of student ID
+
+**Homework**
+- Mini-batch SGD
+- Momentum
+- Nesterov Momentum
+- Adam  
+All implemented **from scratch using NumPy**, with accuracy comparison and misclassified sample visualization.
+
+---
+
+### Lab 5 — Regularization & Autodiff
+**In-Class**
+- Forward-mode vs reverse-mode autodiff tracing
+- Integrate into a simple logistic classifier
+
+**Homework**
+- Early stopping
+- Weight decay (L2)
+- Train/val loss & accuracy curve comparisons
+- Experiments with multiple λ values
+
+---
+
+### Lab 6 — CNN
+**In-Class**
+- Implement 2D convolution with padding/stride using NumPy
+- Apply vertical/horizontal edge filters
+- Binary visualization via thresholding
+
+**Homework**
+- Cats vs Dogs classification using Keras/TensorFlow
+- CNN redesign to improve validation accuracy
+- Data augmentation, Dropout, BatchNorm
+- Confusion matrix + classification report
+
+---
+
+### Lab 7 — RNN / LSTM
+**In-Class**
+- Vanilla RNN for toy sentence sentiment classification
+- Manual parameter updates (no built-in optimizers)
+
+**Homework**
+- Manual LSTM cell implementation
+- MNIST treated as a 28-step sequence
+- Hyperparameter tuning + test accuracy + example predictions
+
+---
+
+### Lab 8 — GAN & Vision Transformer
+**In-Class**
+- GAN on MNIST (single target digit)
+- BCE loss, simple MLP G/D
+- Save generated samples across epochs
+
+**Homework**
+- Vision Transformer from scratch
+- 6-class defect dataset
+- Manual patch embedding, positional encoding, MHA, MLP blocks
+- Required: 70/30 train-test split, confusion matrix, classwise predictions
+
+---
+
+### Lab 9 — GAN vs CycleGAN
+Focus:
+- Extend GAN to **FashionMNIST** and **CIFAR-10**
+- Train on **≥ 3 classes per dataset**
+- Implement CycleGAN-style model for same classes
+- **Mimic mode** (style targeting)
+- Visual comparison of GAN vs CycleGAN results
+
+---
+
+## Final Project (If Included)
+Focus:
+- Metallic surface defect **object detection** (6 classes)
+- Train an improved detector (pretrained backbone allowed, **must be modified**)
+- Generate `submission.csv` for Kaggle evaluation
+
+---
+
+## Environment
+Common dependencies across labs:
+```bash
+pip install numpy pandas matplotlib
+````
+
+Deep learning labs may also require:
+
+```bash
+pip install torch torchvision
+pip install tensorflow
+pip install einops
+```
+
+---
+
+## Recommended Structure
+
+```text
+.
+├─ Lab1/
+├─ Lab2/
+├─ Lab3/
+├─ Lab4/
+├─ Lab5/
+├─ Lab6/
+├─ Lab7/
+├─ Lab8/
+├─ Lab9/
+├─ FinalProject/        # if applicable
+└─ README.md
+```
+
+---
+
+## Academic Integrity
+
+All work in this repository is intended to follow course rules on **individual completion** and **plagiarism avoidance**.
+Please do not copy or redistribute solutions in ways that violate the course policy.
+
 # Machine Learning Lab 1 — Regression
 
 This repository contains my implementation for **Machine Learning Laboratory: Regression**.  
